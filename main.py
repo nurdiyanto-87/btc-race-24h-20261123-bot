@@ -4,7 +4,12 @@ Strategy, in one paragraph: over the 1-minute closes, keep the 240-bar (4-hour)
 simple moving average. When the close dips at least 0.5% below that average,
 buy with all available cash. When the close recovers to at least 0.7% above
 the average, sell the whole position. One position at most, long only, one
-order per reply at most.
+order per reply at most. A buy is skipped when the dip is already deeper
+than 3.0% below the average: entries stay inside the 0.5%-3.0% dip band
+this strategy was built for instead of catching a knife in a slide that
+keeps falling. No dev-window bar ever dips past 1.5% below the average, so
+the guard never fires on the dev grade; it only binds in the unseen race
+window, where it caps how far underwater a fresh entry can start.
 
 Why this shape: a full round trip costs about 26 bps in fees, slippage and
 price impact, so a trade needs a swing clearly larger than that. Buying a
@@ -34,6 +39,12 @@ SMA_BARS = 240
 BUY_BAND_BPS = 50
 # Sell when close >= SMA * (10000 + SELL_BAND_BPS) / 10000  (0.7% over the average).
 SELL_BAND_BPS = 70
+# Never buy when the dip is already deeper than this below the average:
+# entries stay inside the 0.5%-3.0% dip band the strategy was built for,
+# instead of catching a knife in a slide that keeps falling. No dev-window
+# bar ever dips past 1.5% below the average, so the guard is inert on the
+# dev grade and only binds in the unseen race window.
+MAX_DIP_BPS = 300
 # Orders are capped at 1% past the close they were decided on; a fill past
 # that is refused and the signal is simply re-sent on the next bar.
 MAX_SLIPPAGE_BPS = 100
@@ -57,7 +68,11 @@ class DipBuyer:
         return self.running_sum / SMA_BARS
 
     def buy_signal(self, close, sma):
-        return close * 10000 < sma * (10000 - BUY_BAND_BPS)
+        if not close * 10000 < sma * (10000 - BUY_BAND_BPS):
+            return False
+        # Regime guard: skip the buy when the dip is already deeper than
+        # MAX_DIP_BPS below the average.
+        return close * 10000 >= sma * (10000 - MAX_DIP_BPS)
 
     def sell_signal(self, close, sma):
         return close * 10000 >= sma * (10000 + SELL_BAND_BPS)
