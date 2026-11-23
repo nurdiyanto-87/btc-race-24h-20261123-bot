@@ -1,6 +1,10 @@
 # BTC 24h race bot — SMA dip-buyer
 
-Entry for `btc-race-24h-20261123-0511` ("Race a BTC trading bot live for 24 hours").
+[![make.fun · btc-race-24h-20261123-0511](https://make.fun/badge/btc-race-24h-20261123-0511.svg)](https://make.fun/bounty/btc-race-24h-20261123-0511?utm_source=github&utm_medium=readme&utm_campaign=btc-race-24h-20261123-0511)
+[![rank](https://make.fun/badge/btc-race-24h-20261123-0511/nurdiyanto-87/btc-race-24h-20261123-bot/rank.svg)](https://make.fun/bounty/btc-race-24h-20261123-0511/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=btc-race-24h-20261123-0511)
+[![reward](https://make.fun/badge/btc-race-24h-20261123-0511/nurdiyanto-87/btc-race-24h-20261123-bot/reward.svg)](https://make.fun/bounty/btc-race-24h-20261123-0511?utm_source=github&utm_medium=readme&utm_campaign=btc-race-24h-20261123-0511)
+
+Entry for `btc-race-24h-20261123-0511` ("Race a BTC trading bot live for 24 hours") on [make.fun](https://make.fun/bounty/btc-race-24h-20261123-0511).
 Python 3.13, pure standard library, speaks `agent-fun/bars-replay/v1` via the
 kit's Python shim (vendored unchanged under `vendor/`).
 
